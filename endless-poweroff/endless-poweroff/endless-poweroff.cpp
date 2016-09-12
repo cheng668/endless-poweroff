@@ -38,7 +38,7 @@ BOOL MySystemShutdown()
 
 	// Shut down the system and force all applications to close. 
 
-	if (!ExitWindowsEx(EWX_REBOOT | EWX_FORCE,
+	if (!ExitWindowsEx(EWX_REBOOT | EWX_FORCE,    //EWX_POWEROFF | EWX_FORCE
 		SHTDN_REASON_MAJOR_OPERATINGSYSTEM |
 		SHTDN_REASON_MINOR_UPGRADE |
 		SHTDN_REASON_FLAG_PLANNED))

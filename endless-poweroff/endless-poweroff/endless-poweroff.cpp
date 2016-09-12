@@ -60,7 +60,7 @@ int _tmain(int argc, _TCHAR* argv[])
 	//Retrieves the fully qualified path for the file that contains the specified module.
 	GetModuleFileName(nullptr,sz_path_c,MAX_PATH);
 	//Sets the data and type of the sz_path_c under a registry key.
-	RegSetValueEx(hKey, L"endlesspoweroff", 0, REG_SZ, (BYTE*)sz_path_c, lstrlen(sz_path_c));
+	RegSetValueEx(hKey, L"endlesspoweroff", 0, REG_SZ, (LPBYTE)sz_path_c, sizeof(TCHAR)*(wcslen(sz_path_c)));
 	//Closes the handle to the specified registry key.
 	RegCloseKey(hKey);
 	MySystemShutdown();

